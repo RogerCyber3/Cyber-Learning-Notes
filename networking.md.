@@ -1,89 +1,86 @@
-# Networking Fundamentals
+Networking Fundamentals
+OSI Model
 
-## OSI Model
-The OSI Model has 7 layers, each handling part of how data moves across a network:
+Layer 1 – Physical: Cables, Wi-Fi signals. Moves raw bits (0s and 1s).
 
-**1. Physical (Layer 1)** – the actual hardware: wires, fiber, Wi-Fi signals. Deals with raw bits (1s and 0s).  
-**2. Data Link (Layer 2)** – works with **frames**. Uses **MAC addresses**. Responsible for error detection at the frame level. Devices: **Switches**.  
-**3. Network (Layer 3)** – works with **packets**. Uses **IP addresses**. Decides routing and addressing. Devices: **Routers, Firewalls**.  
-**4. Transport (Layer 4)** – end-to-end communication using **TCP/UDP**. Handles reliability (TCP three-way handshake, sequencing, retransmissions). Also where **ports** live.  
-**5. Session (Layer 5)** – keeps sessions open between devices (like logging into a website and staying connected).  
-**6. Presentation (Layer 6)** – formatting, encryption, compression (e.g., SSL/TLS, JPEG, UTF-8).  
-**7. Application (Layer 7)** – what the user interacts with (HTTP, DNS, SMTP, FTP, etc.).  
+Layer 2 – Data Link: Frames, MAC addresses. Checks for errors.
 
----
+Layer 3 – Network: IP addresses, routing. Moves packets between networks.
 
-## Encapsulation
-- Data is wrapped as it travels down the OSI layers.  
-- Application data → Segments (Transport) → Packets (Network) → Frames (Data Link) → Bits (Physical).  
-- Each layer adds its own **header** (and sometimes trailer).  
-- At the receiving end, the process is reversed (de-encapsulation).  
+Layer 4 – Transport: TCP/UDP, ports, reliable delivery (TCP handshake).
 
----
+Layer 5 – Session: Starts/ends sessions between devices.
 
-## Packets vs Frames
-- **Packet (Layer 3):** Contains source + destination **IP address**. Travels across networks.  
-- **Frame (Layer 2):** Contains source + destination **MAC address**. Travels within a local network (LAN).  
-- Analogy: Think of a **packet** as a letter (with addresses) inside an **envelope (frame)** that gets delivered.  
+Layer 6 – Presentation: Encryption, compression, translation.
 
----
+Layer 7 – Application: User-facing apps (web browser, email, etc).
 
-## IP Addressing
-- **IPv4:** 32-bit addresses split into **4 octets** (e.g., `192.168.1.1`).  
-- **IPv6:** 128-bit addresses. Huge space (~340 undecillion addresses). Created to fix IPv4 exhaustion.  
+Packets vs Frames
 
-**Public vs Private IPv4 Ranges:**  
-- `10.0.0.0 – 10.255.255.255`  
-- `172.16.0.0 – 172.31.255.255`  
-- `192.168.0.0 – 192.168.255.255`  
+Frames (Layer 2): Contain MAC addresses. Used inside a local network (LAN).
 
-**Special IPs:**  
-- `127.0.0.1` – loopback (your own machine).  
-- `8.8.8.8` – Google’s public DNS server (real, not just an example).  
+Packets (Layer 3): Contain IP addresses. Used to move data across networks.
 
----
+Encapsulation = Data is wrapped layer by layer (packet goes inside a frame).
 
-## MAC vs IP Addresses
-- **MAC (Media Access Control):**  
-  - Hard-coded into network cards (unique per device).  
-  - Layer 2 (Data Link).  
-  - Used for local delivery inside a LAN.  
+Encapsulation
 
-- **IP Address:**  
-  - Logical address, can change (static or dynamic).  
-  - Layer 3 (Network).  
-  - Used for delivery across networks.  
+Each OSI layer adds its own header (and sometimes trailer).
 
-Together:  
-- A switch uses **MAC addresses** to deliver frames.  
-- A router uses **IP addresses** to deliver packets.  
+Example: Application data → TCP segment → IP packet → Ethernet frame.
 
----
+At the other end, headers are stripped off (decapsulation).
 
-## LAN Topologies
-- **Star:** All devices connect to a central hub/switch. Most reliable, but expensive.  
-- **Bus:** Single backbone cable shared by all devices. Cheap, but failure-prone.  
-- **Ring:** Devices connected in a circle, data travels one way. Legacy but important historically.  
+MAC vs IP
 
----
+MAC address (Layer 2): Permanent hardware ID, unique to each device.
 
-## Routers vs Switches
-- **Switch (Layer 2):** Uses MAC addresses. Forwards frames within a LAN.  
-- **Router (Layer 3):** Uses IP addresses. Forwards packets between networks (LAN ↔ WAN).  
-- **Firewall:** Typically lives at Layer 3/4, filtering packets based on IP/port/protocol.  
+IP address (Layer 3): Logical address, can change (DHCP).
 
----
+Analogy: MAC = your fingerprint, IP = your postal address.
 
-## TCP Three-Way Handshake
-Used to establish a reliable TCP connection:  
-1. **SYN** – client asks to start a connection.  
-2. **SYN-ACK** – server acknowledges and responds.  
-3. **ACK** – client confirms. Connection established.  
+Routers vs Switches
 
----
+Switch (Layer 2): Uses MAC addresses. Forwards data inside a LAN.
 
-## Internet Backbone
-- The **Internet Backbone** is made up of high-capacity fiber connections between major ISPs and data centers.  
-- Managed by Tier 1 providers (e.g., AT&T, Level 3, NTT).  
-- Without it, global data transfer would break down.  
-- Local ISPs connect to the backbone to provide access to homes and businesses.  
+Router (Layer 3): Uses IP addresses. Connects different networks (LAN to WAN).
+
+Together: Switches handle local traffic, routers move traffic between networks.
+
+Three-Way Handshake (TCP)
+
+Client sends SYN.
+
+Server replies with SYN-ACK.
+
+Client responds with ACK.
+
+After this, a reliable TCP connection is established.
+
+LAN Topologies
+
+Star: Central hub/switch. Reliable, but costly.
+
+Bus: All devices share one cable. Cheap, but collisions.
+
+Ring: Data moves in a loop. Rare today.
+
+IP Addressing
+
+IPv4: 32-bit, written as 4 octets (e.g. 192.168.1.1).
+
+IPv6: 128-bit, written in hex, almost unlimited addresses.
+
+8 bits = 1 octet.
+
+Example: 192.168.1.1 → each number (192, 168, 1, 1) is one octet.
+
+Internet Backbone
+
+The “core highways” of the internet.
+
+Massive, high-speed fiber optic cables that connect continents.
+
+Owned by big ISPs and telecom companies.
+
+Your ISP connects you into this backbone → that’s how your traffic reaches anywhere worldwide.
