@@ -1,78 +1,78 @@
-# 🖧 Networking Fundamentals
+# Networking Fundamentals
 
-## IP Addresses
-- **IPv4**: written as four numbers (e.g. `192.168.1.1`).  
-  - **32 bits long**, split into **4 octets** (8 bits each).  
-  - Each octet ranges 0–255 (8 bits = 256 values).  
-  - Total IPv4 addresses ≈ **4.3 billion (2^32)**.  
-- **IPv6**: hexadecimal (e.g. `2001:0db8:85a3::8a2e:0370:7334`).  
-  - **128 bits**, split into **8 blocks of 16 bits**.  
-  - Total ≈ **3.4 × 10^38** (340 undecillion) — effectively inexhaustible.  
-  - Built to solve IPv4 exhaustion, support IoT, simplify routing.  
-- Example: **8.8.8.8** → Google’s public DNS (real, not just an example).
+## OSI Model
+The OSI Model has 7 layers, each with a role in how data travels across a network.
 
-## MAC Addresses (Layer 2)
-- Hardware address of a network interface (e.g. `00:1A:2B:3C:4D:5E`).  
-- Local to the LAN, can be **spoofed**.
+**1. Physical** – bits on wires, radio waves, cables.  
+**2. Data Link** – frames, MAC addresses, switches.  
+**3. Network** – packets, IP addresses, routers.  
+**4. Transport** – TCP/UDP, ports, three-way handshake.  
+**5. Session** – manages sessions (e.g., keeping a web session alive).  
+**6. Presentation** – encryption, compression, data formats.  
+**7. Application** – user-level protocols (HTTP, DNS, SMTP).
 
-## TCP vs UDP (Layer 4)
-- **TCP** = reliable, connection-oriented (web, email).  
-- **UDP** = fast, connectionless (gaming, streaming).
+---
 
-## Common Ports
-- Ports are “doors” services listen on.  
-- 80 HTTP, 443 HTTPS, 22 SSH, 25 SMTP, 53 DNS.
+## IP Addressing
+- **IPv4:** 32-bit addresses, written in 4 octets (e.g., `192.168.1.1`).  
+- **IPv6:** 128-bit addresses, massive space (~340 undecillion possible addresses).  
+- **Public vs Private:**  
+  - Private IPv4 ranges:  
+    - `10.0.0.0 – 10.255.255.255`  
+    - `172.16.0.0 – 172.31.255.255`  
+    - `192.168.0.0 – 192.168.255.255`  
+- `8.8.8.8` = Google’s public DNS server (real, not just an example).  
+- IPs are split into **octets** (8 bits each). IPv4 has 4 octets.  
 
-## OSI Model (quick map)
-1. Physical  
-2. Data Link — **Frames, MAC, CRC**  
-3. Network — **Packets, IP**  
-4. Transport — **TCP/UDP, segments, handshake**  
-5. Session  
-6. Presentation  
-7. Application — **HTTP, DNS, SMTP…**
+---
+
+## LAN Topologies
+- **Star:** devices connect to a central hub/switch. Most reliable, but more expensive.  
+- **Bus:** all devices share a single backbone cable. Cheap, but one failure can kill the network.  
+- **Ring:** devices connected in a circle. Data travels one way. Rare now, but foundational.  
+
+---
 
 ## Packets vs Frames
-- **Packet (L3 – Network):** carries **IP src/dst** for global delivery.  
-  - Analogy: 📦 parcel with postcodes.  
-- **Frame (L2 – Data Link):** wraps the packet with **MAC src/dst + CRC** for local delivery.  
-  - Analogy: ✉️ envelope with exact house number + a seal.  
-- On the wire → a **frame carries a packet**.
+- **Packet (Layer 3 – Network):** contains source and destination IP addresses.  
+- **Frame (Layer 2 – Data Link):** wraps packets; contains source/destination MAC addresses + error check.  
+- Packets live **inside** frames.  
+- Analogy:  
+  - Packet = “deliver to 8.8.8.8”  
+  - Frame = “hand it to MAC address aa:bb:cc:dd:ee:ff inside this LAN”  
 
-## Encapsulation (wraps at each layer)
-Application Data  
-→ **Segment** (TCP/UDP header)  
-→ **Packet** (IP header)  
-→ **Frame** (MAC header + CRC)  
-→ **Bits** (on the cable/radio)
+---
+
+## Encapsulation
+- Data is wrapped in headers at each layer (like Russian dolls or envelopes).  
+- Flow: Application Data → Transport Segment (TCP/UDP) → Network Packet (IP) → Data Link Frame (MAC) → Physical (bits).  
+
+---
 
 ## Switches vs Routers
-- **Switch (L2):** forwards **frames** using **MAC** inside the LAN.  
-- **Router (L3):** forwards **packets** using **IP** between networks.
+- **Switch (Layer 2):**  
+  - Works with MAC addresses.  
+  - Moves frames inside a LAN.  
 
-## LAN (Local Area Network)
-- Local scope (home, office, school). Typically fast (100 Mbps–10 Gbps).  
-- **Private IPv4 ranges (RFC1918)** — non-routable on the internet, reused safely:
-  - `10.0.0.0 – 10.255.255.255` (large)
-  - `172.16.0.0 – 172.31.255.255` (medium)
-  - `192.168.0.0 – 192.168.255.255` (small, common at home)
-- **NAT** on your router translates private → public IP for the internet.
+- **Router (Layer 3):**  
+  - Works with IP addresses.  
+  - Moves packets between networks (LAN ↔ WAN).  
 
-### LAN Topologies
-- **Star**: central switch/hub (reliable, pricier).  
-- **Bus**: single backbone (simple, fragile).  
-- **Ring**: loop (one break can disrupt).
+---
 
-## TCP Three-Way Handshake 🤝
-1. **SYN** (client) → 2. **SYN-ACK** (server) → 3. **ACK** (client).  
-- Creates reliable TCP session. Attack angle: **SYN flood** (DoS).
+## MAC vs IP
+- **MAC Address (Layer 2):**  
+  - Hardware address (burned into NIC).  
+  - Local only, like an apartment number.  
 
-## Firewalls
-- Classic filtering at **L3/L4** (IP/port/protocol).  
-- Next-Gen can inspect **L7** (applications/URLs/content).
+- **IP Address (Layer 3):**  
+  - Logical, assigned, can change.  
+  - Global, like a street address.  
 
-## What I’ve Learned (so far)
-- IPv4 = **4 octets** (32 bits); IPv6 = **128 bits** (enormous space).  
-- **Frame = local (MAC + CRC)**, **Packet = global (IP)**.  
-- **Switch = L2/MAC**, **Router = L3/IP**.  
-- 8.8.8.8 is a real Google DNS resolver.
+---
+
+## Upcoming Topics
+- DNS (translating names to IPs).  
+- Internet Backbone.  
+- Firewalls (Layers 3 & 4).  
+- Linux basics once I spin up my VM.  
