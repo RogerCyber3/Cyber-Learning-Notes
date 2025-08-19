@@ -1,78 +1,89 @@
 # Networking Fundamentals
 
 ## OSI Model
-The OSI Model has 7 layers, each with a role in how data travels across a network.
+The OSI Model has 7 layers, each handling part of how data moves across a network:
 
-**1. Physical** – bits on wires, radio waves, cables.  
-**2. Data Link** – frames, MAC addresses, switches.  
-**3. Network** – packets, IP addresses, routers.  
-**4. Transport** – TCP/UDP, ports, three-way handshake.  
-**5. Session** – manages sessions (e.g., keeping a web session alive).  
-**6. Presentation** – encryption, compression, data formats.  
-**7. Application** – user-level protocols (HTTP, DNS, SMTP).
-
----
-
-## IP Addressing
-- **IPv4:** 32-bit addresses, written in 4 octets (e.g., `192.168.1.1`).  
-- **IPv6:** 128-bit addresses, massive space (~340 undecillion possible addresses).  
-- **Public vs Private:**  
-  - Private IPv4 ranges:  
-    - `10.0.0.0 – 10.255.255.255`  
-    - `172.16.0.0 – 172.31.255.255`  
-    - `192.168.0.0 – 192.168.255.255`  
-- `8.8.8.8` = Google’s public DNS server (real, not just an example).  
-- IPs are split into **octets** (8 bits each). IPv4 has 4 octets.  
-
----
-
-## LAN Topologies
-- **Star:** devices connect to a central hub/switch. Most reliable, but more expensive.  
-- **Bus:** all devices share a single backbone cable. Cheap, but one failure can kill the network.  
-- **Ring:** devices connected in a circle. Data travels one way. Rare now, but foundational.  
-
----
-
-## Packets vs Frames
-- **Packet (Layer 3 – Network):** contains source and destination IP addresses.  
-- **Frame (Layer 2 – Data Link):** wraps packets; contains source/destination MAC addresses + error check.  
-- Packets live **inside** frames.  
-- Analogy:  
-  - Packet = “deliver to 8.8.8.8”  
-  - Frame = “hand it to MAC address aa:bb:cc:dd:ee:ff inside this LAN”  
+**1. Physical (Layer 1)** – the actual hardware: wires, fiber, Wi-Fi signals. Deals with raw bits (1s and 0s).  
+**2. Data Link (Layer 2)** – works with **frames**. Uses **MAC addresses**. Responsible for error detection at the frame level. Devices: **Switches**.  
+**3. Network (Layer 3)** – works with **packets**. Uses **IP addresses**. Decides routing and addressing. Devices: **Routers, Firewalls**.  
+**4. Transport (Layer 4)** – end-to-end communication using **TCP/UDP**. Handles reliability (TCP three-way handshake, sequencing, retransmissions). Also where **ports** live.  
+**5. Session (Layer 5)** – keeps sessions open between devices (like logging into a website and staying connected).  
+**6. Presentation (Layer 6)** – formatting, encryption, compression (e.g., SSL/TLS, JPEG, UTF-8).  
+**7. Application (Layer 7)** – what the user interacts with (HTTP, DNS, SMTP, FTP, etc.).  
 
 ---
 
 ## Encapsulation
-- Data is wrapped in headers at each layer (like Russian dolls or envelopes).  
-- Flow: Application Data → Transport Segment (TCP/UDP) → Network Packet (IP) → Data Link Frame (MAC) → Physical (bits).  
+- Data is wrapped as it travels down the OSI layers.  
+- Application data → Segments (Transport) → Packets (Network) → Frames (Data Link) → Bits (Physical).  
+- Each layer adds its own **header** (and sometimes trailer).  
+- At the receiving end, the process is reversed (de-encapsulation).  
 
 ---
 
-## Switches vs Routers
-- **Switch (Layer 2):**  
-  - Works with MAC addresses.  
-  - Moves frames inside a LAN.  
-
-- **Router (Layer 3):**  
-  - Works with IP addresses.  
-  - Moves packets between networks (LAN ↔ WAN).  
+## Packets vs Frames
+- **Packet (Layer 3):** Contains source + destination **IP address**. Travels across networks.  
+- **Frame (Layer 2):** Contains source + destination **MAC address**. Travels within a local network (LAN).  
+- Analogy: Think of a **packet** as a letter (with addresses) inside an **envelope (frame)** that gets delivered.  
 
 ---
 
-## MAC vs IP
-- **MAC Address (Layer 2):**  
-  - Hardware address (burned into NIC).  
-  - Local only, like an apartment number.  
+## IP Addressing
+- **IPv4:** 32-bit addresses split into **4 octets** (e.g., `192.168.1.1`).  
+- **IPv6:** 128-bit addresses. Huge space (~340 undecillion addresses). Created to fix IPv4 exhaustion.  
 
-- **IP Address (Layer 3):**  
-  - Logical, assigned, can change.  
-  - Global, like a street address.  
+**Public vs Private IPv4 Ranges:**  
+- `10.0.0.0 – 10.255.255.255`  
+- `172.16.0.0 – 172.31.255.255`  
+- `192.168.0.0 – 192.168.255.255`  
+
+**Special IPs:**  
+- `127.0.0.1` – loopback (your own machine).  
+- `8.8.8.8` – Google’s public DNS server (real, not just an example).  
 
 ---
 
-## Upcoming Topics
-- DNS (translating names to IPs).  
-- Internet Backbone.  
-- Firewalls (Layers 3 & 4).  
-- Linux basics once I spin up my VM.  
+## MAC vs IP Addresses
+- **MAC (Media Access Control):**  
+  - Hard-coded into network cards (unique per device).  
+  - Layer 2 (Data Link).  
+  - Used for local delivery inside a LAN.  
+
+- **IP Address:**  
+  - Logical address, can change (static or dynamic).  
+  - Layer 3 (Network).  
+  - Used for delivery across networks.  
+
+Together:  
+- A switch uses **MAC addresses** to deliver frames.  
+- A router uses **IP addresses** to deliver packets.  
+
+---
+
+## LAN Topologies
+- **Star:** All devices connect to a central hub/switch. Most reliable, but expensive.  
+- **Bus:** Single backbone cable shared by all devices. Cheap, but failure-prone.  
+- **Ring:** Devices connected in a circle, data travels one way. Legacy but important historically.  
+
+---
+
+## Routers vs Switches
+- **Switch (Layer 2):** Uses MAC addresses. Forwards frames within a LAN.  
+- **Router (Layer 3):** Uses IP addresses. Forwards packets between networks (LAN ↔ WAN).  
+- **Firewall:** Typically lives at Layer 3/4, filtering packets based on IP/port/protocol.  
+
+---
+
+## TCP Three-Way Handshake
+Used to establish a reliable TCP connection:  
+1. **SYN** – client asks to start a connection.  
+2. **SYN-ACK** – server acknowledges and responds.  
+3. **ACK** – client confirms. Connection established.  
+
+---
+
+## Internet Backbone
+- The **Internet Backbone** is made up of high-capacity fiber connections between major ISPs and data centers.  
+- Managed by Tier 1 providers (e.g., AT&T, Level 3, NTT).  
+- Without it, global data transfer would break down.  
+- Local ISPs connect to the backbone to provide access to homes and businesses.  
