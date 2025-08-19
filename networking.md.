@@ -1,0 +1,78 @@
+# 🖧 Networking Fundamentals
+
+## IP Addresses
+- **IPv4**: written as four numbers (e.g. `192.168.1.1`).  
+  - **32 bits long**, split into **4 octets** (8 bits each).  
+  - Each octet ranges 0–255 (8 bits = 256 values).  
+  - Total IPv4 addresses ≈ **4.3 billion (2^32)**.  
+- **IPv6**: hexadecimal (e.g. `2001:0db8:85a3::8a2e:0370:7334`).  
+  - **128 bits**, split into **8 blocks of 16 bits**.  
+  - Total ≈ **3.4 × 10^38** (340 undecillion) — effectively inexhaustible.  
+  - Built to solve IPv4 exhaustion, support IoT, simplify routing.  
+- Example: **8.8.8.8** → Google’s public DNS (real, not just an example).
+
+## MAC Addresses (Layer 2)
+- Hardware address of a network interface (e.g. `00:1A:2B:3C:4D:5E`).  
+- Local to the LAN, can be **spoofed**.
+
+## TCP vs UDP (Layer 4)
+- **TCP** = reliable, connection-oriented (web, email).  
+- **UDP** = fast, connectionless (gaming, streaming).
+
+## Common Ports
+- Ports are “doors” services listen on.  
+- 80 HTTP, 443 HTTPS, 22 SSH, 25 SMTP, 53 DNS.
+
+## OSI Model (quick map)
+1. Physical  
+2. Data Link — **Frames, MAC, CRC**  
+3. Network — **Packets, IP**  
+4. Transport — **TCP/UDP, segments, handshake**  
+5. Session  
+6. Presentation  
+7. Application — **HTTP, DNS, SMTP…**
+
+## Packets vs Frames
+- **Packet (L3 – Network):** carries **IP src/dst** for global delivery.  
+  - Analogy: 📦 parcel with postcodes.  
+- **Frame (L2 – Data Link):** wraps the packet with **MAC src/dst + CRC** for local delivery.  
+  - Analogy: ✉️ envelope with exact house number + a seal.  
+- On the wire → a **frame carries a packet**.
+
+## Encapsulation (wraps at each layer)
+Application Data  
+→ **Segment** (TCP/UDP header)  
+→ **Packet** (IP header)  
+→ **Frame** (MAC header + CRC)  
+→ **Bits** (on the cable/radio)
+
+## Switches vs Routers
+- **Switch (L2):** forwards **frames** using **MAC** inside the LAN.  
+- **Router (L3):** forwards **packets** using **IP** between networks.
+
+## LAN (Local Area Network)
+- Local scope (home, office, school). Typically fast (100 Mbps–10 Gbps).  
+- **Private IPv4 ranges (RFC1918)** — non-routable on the internet, reused safely:
+  - `10.0.0.0 – 10.255.255.255` (large)
+  - `172.16.0.0 – 172.31.255.255` (medium)
+  - `192.168.0.0 – 192.168.255.255` (small, common at home)
+- **NAT** on your router translates private → public IP for the internet.
+
+### LAN Topologies
+- **Star**: central switch/hub (reliable, pricier).  
+- **Bus**: single backbone (simple, fragile).  
+- **Ring**: loop (one break can disrupt).
+
+## TCP Three-Way Handshake 🤝
+1. **SYN** (client) → 2. **SYN-ACK** (server) → 3. **ACK** (client).  
+- Creates reliable TCP session. Attack angle: **SYN flood** (DoS).
+
+## Firewalls
+- Classic filtering at **L3/L4** (IP/port/protocol).  
+- Next-Gen can inspect **L7** (applications/URLs/content).
+
+## What I’ve Learned (so far)
+- IPv4 = **4 octets** (32 bits); IPv6 = **128 bits** (enormous space).  
+- **Frame = local (MAC + CRC)**, **Packet = global (IP)**.  
+- **Switch = L2/MAC**, **Router = L3/IP**.  
+- 8.8.8.8 is a real Google DNS resolver.
